@@ -10,6 +10,8 @@ var REFRESH_RATE = 40;
 
 var timeWhenGameStarted = Date.now();
 
+var frameCount = 0;
+
 var player = {
     x:50,
     spdX:30,
@@ -118,6 +120,11 @@ drawEntity = function(something){
 
 update = function  () {
     ctx.clearRect(0,0,WIDTH,HEIGHT);
+    
+    frameCount++;
+    
+    if(frameCount % 100 === 0)
+        randomlyGenerateEnemy();
 
     for(var key in enemyList){
         updateEntity(enemyList[key]);
@@ -149,7 +156,7 @@ randomlyGenerateEnemy = function(){
     var id = Math.random();
     var spdX = 5 + Math.random() * 5;
     var spdY = 5 + Math.random() * 5;
-    
+
     Enemy(id,x,y,spdX,spdY,width,height);
 }
 
