@@ -1,14 +1,12 @@
 <canvas id="ctx" width="500" height="500" style="border:1px solid #000000;"></canvas>
 
-// This is a note.
-
 <script>
 var ctx = document.getElementById("ctx").getContext("2d");
 ctx.font = '30px Arial';
 
 var HEIGHT = 500;
 var WIDTH = 500;
-var REFRESH_RATE = 10;
+var REFRESH_RATE = 40;
 
 var timeWhenGameStarted = Date.now();
 
@@ -24,18 +22,18 @@ var player = {
 var enemyList = {};
 
 
- getDistanceBetweenEntity = function(entity1,entity2){
+getDistanceBetweenEntity = function(entity1,entity2){
     var vx = entity1.x - entity2.x;
     var vy = entity1.y - entity2.y;
     return Math.sqrt(vx*vx+vy*vy);
 }
 
- testCollisionEntity = function(entity1,entity2){
+testCollisionEntity = function(entity1,entity2){
     var distance = getDistanceBetweenEntity(entity1,entity2);
     return distance < 30;
 }
 
- Enemy = function(id,x,y,spdX,spdY){
+Enemy = function(id,x,y,spdX,spdY){
     var enemy3 = {
     x:x,
     spdX:spdX,
@@ -63,7 +61,7 @@ document.onmousemove = function(mouse){
 
 updateEntity = function (something) {
    updateEntityPosition(something);
-   drawEntity(something); 
+   drawEnemy(something); 
 }
 
 updateEntityPosition = function(something){
@@ -79,8 +77,18 @@ updateEntityPosition = function(something){
     }
 }
 
-drawEntity = function(something){
-    ctx.fillText(something.name,something.x,something.y)
+drawPlayer = function(something){
+    ctx.save();
+    ctx.fillStyle = 'green';
+    ctx.fillRect(something.x-10,something.y-10,20,20)
+    ctx.restore();
+}
+
+drawEnemy = function(something){
+    ctx.save();
+    ctx.fillStyle = 'red';
+    ctx.fillRect(something.x-15,something.y-15,30,30)
+    ctx.restore();
 }
 
 update = function  () {
@@ -103,7 +111,7 @@ update = function  () {
         }
     }
 
-    drawEntity (player);
+    drawPlayer(player);
     ctx.fillText(player.hp + "Hp",0,30);
 }
 
