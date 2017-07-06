@@ -133,18 +133,28 @@ update = function  () {
 
         if (isColliding){
             player.hp = player.hp - 1;
-            if(player.hp <= 0){
-                var timeSurvived = Date.now() - timeWhenGameStarted;
-
-                console.log("You lost! You survived for " + timeSurvived + " ms.");
-                timeWhenGameStarted = Date.now();
-                player.hp = 10;
-            }
         }
     }
 
+    if(player.hp <= 0){
+        var timeSurvived = Date.now() - timeWhenGameStarted;
+        console.log("You lost! You survived for " + timeSurvived + " ms.");
+        startNewGame();
+    }
+
     drawEntity(player);
-    ctx.fillText(player.hp + "Hp",0,30);
+    ctx.fillText(player.hp + "HP",0,30);
+}
+
+startNewGame = function(){
+    player.hp = 10;
+    timeWhenGameStarted = Date.now();
+    frameCount = 0;
+    enemyList = {};
+    
+    randomlyGenerateEnemy();
+    randomlyGenerateEnemy();
+    randomlyGenerateEnemy();
 }
 
 randomlyGenerateEnemy = function(){
@@ -160,9 +170,7 @@ randomlyGenerateEnemy = function(){
     Enemy(id,x,y,spdX,spdY,width,height);
 }
 
-randomlyGenerateEnemy();
-randomlyGenerateEnemy();
-randomlyGenerateEnemy();
+startNewGame();
 
 setInterval(update,REFRESH_RATE);
 
