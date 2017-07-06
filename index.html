@@ -27,7 +27,7 @@ var player = {
 };
 
 var enemyList = {};
-
+var upgradeList = {};
 
 getDistanceBetweenEntity = function(entity1,entity2){
     var vx = entity1.x - entity2.x;
@@ -67,6 +67,47 @@ Enemy = function(id,x,y,spdX,spdY,width,height){
     };
 
     enemyList[id] = enemy;
+}
+
+randomlyGenerateEnemy = function(){
+    // Math.random() - Generates random number between 0-10
+    var x = Math.random() * WIDTH;
+    var y = Math.random() * HEIGHT;
+    var height = 10 + Math.random()*30;
+    var width = 10 + Math.random()*30;
+    var id = Math.random();
+    var spdX = 5 + Math.random() * 5;
+    var spdY = 5 + Math.random() * 5;
+
+    Enemy(id,x,y,spdX,spdY,width,height);
+}
+
+Upgrade = function(id,x,y,spdX,spdY,width,height){
+    var upgrade = {
+        x:x,
+        spdX:spdX,
+        y:y,
+        spdY:spdY,
+        name:'E',
+        id:id,
+        width:width,
+        height:height,
+        color:'orange',
+    };
+    upgradeList[id] = upgrade;
+}
+
+randomlyGenerateUpgrade = function(){
+    // Math.random() - Generates random number between 0-10
+    var x = Math.random() * WIDTH;
+    var y = Math.random() * HEIGHT;
+    var height = 10;
+    var width = 10;
+    var id = Math.random();
+    var spdX =0;
+    var spdY =0;
+
+    Upgrade(id,x,y,spdX,spdY,width,height);
 }
 
 document.onmousemove = function(mouse){
@@ -126,8 +167,15 @@ update = function  () {
     frameCount++;
     score++;
     
-    if(frameCount % 100 === 0)
+    if(frameCount % 100 === 0) // Every 4 sec?
         randomlyGenerateEnemy();
+
+    if(frameCount % 75 === 0) // Every 3 sec?
+        randomlyGenerateUpgrade();
+
+    for(var key in upgradeList){
+        updateEntity(upgradeList[key]);
+    }
 
     for(var key in enemyList){
         updateEntity(enemyList[key]);
@@ -147,7 +195,7 @@ update = function  () {
 
     drawEntity(player);
     ctx.fillText(player.hp + "HP",0,30);
-    ctx.fillText('score: ' + score,200,30);
+    ctx.fillText('Score: ' + score,200,30);
 }
 
 startNewGame = function(){
@@ -160,19 +208,6 @@ startNewGame = function(){
     randomlyGenerateEnemy();
     randomlyGenerateEnemy();
     randomlyGenerateEnemy();
-}
-
-randomlyGenerateEnemy = function(){
-    // Math.random() - Generates random number between 0-10
-    var x = Math.random() * WIDTH;
-    var y = Math.random() * HEIGHT;
-    var height = 10 + Math.random()*30;
-    var width = 10 + Math.random()*30;
-    var id = Math.random();
-    var spdX = 5 + Math.random() * 5;
-    var spdY = 5 + Math.random() * 5;
-
-    Enemy(id,x,y,spdX,spdY,width,height);
 }
 
 startNewGame();
