@@ -12,6 +12,8 @@ var timeWhenGameStarted = Date.now();
 
 var frameCount = 0;
 
+var score = 0;
+
 var player = {
     x:50,
     spdX:30,
@@ -122,6 +124,7 @@ update = function  () {
     ctx.clearRect(0,0,WIDTH,HEIGHT);
     
     frameCount++;
+    score++;
     
     if(frameCount % 100 === 0)
         randomlyGenerateEnemy();
@@ -144,14 +147,16 @@ update = function  () {
 
     drawEntity(player);
     ctx.fillText(player.hp + "HP",0,30);
+    ctx.fillText('score: ' + score,200,30);
 }
 
 startNewGame = function(){
     player.hp = 10;
     timeWhenGameStarted = Date.now();
     frameCount = 0;
+    score = 0;
     enemyList = {};
-    
+
     randomlyGenerateEnemy();
     randomlyGenerateEnemy();
     randomlyGenerateEnemy();
